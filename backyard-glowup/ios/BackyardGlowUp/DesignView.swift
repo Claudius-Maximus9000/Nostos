@@ -109,7 +109,7 @@ struct DesignView: View {
                 ForEach(config.modes) { mode in
                     PlanCard(
                         mode: mode,
-                        icon: mode.id == "glowup" ? "sparkles" : "leaf",
+                        icon: mode.isShop ? "bag" : "hammer",
                         isSelected: mode.id == model.selectedModeID
                     ) {
                         model.selectMode(mode.id)
@@ -121,7 +121,7 @@ struct DesignView: View {
 
     private var upgradesSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionTitle(number: 3, title: "Upgrades")
+            SectionTitle(number: 3, title: isShopPlan ? "Items" : "Upgrades")
             VStack(spacing: 0) {
                 ForEach(model.selectedMode?.upgrades ?? []) { upgrade in
                     Button {
@@ -176,7 +176,7 @@ struct DesignView: View {
                         Text("Designing your yard…")
                     } else {
                         Image(systemName: "wand.and.stars")
-                        Text(model.selectedModeID == "glowup" ? "Show Me the Glow Up" : "Show Me the Cleanup")
+                        Text("Show Me the \(model.selectedMode?.label ?? "Glow Up")")
                     }
                 }
                 .font(.headline)
@@ -191,7 +191,7 @@ struct DesignView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else if model.selectedUpgradeIDs.isEmpty {
-                Text("Pick at least one upgrade.")
+                Text(isShopPlan ? "Pick at least one item." : "Pick at least one upgrade.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
             } else if model.isGenerating {
@@ -207,6 +207,11 @@ struct DesignView: View {
                     .multilineTextAlignment(.center)
             }
         }
+    }
+
+    // Glow Up sells products ("items"); Glow Up Plus is a contractor build ("upgrades").
+    private var isShopPlan: Bool {
+        model.selectedMode?.isShop ?? true
     }
 
     private func loadPicked(_ item: PhotosPickerItem?) async {

@@ -32,7 +32,6 @@ struct GalleryView: View {
             .navigationDestination(for: Design.self) { design in
                 ResultView(design: design, model: model)
             }
-            .refreshable { await model.loadGallery() }
         }
     }
 }

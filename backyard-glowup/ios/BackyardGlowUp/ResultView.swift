@@ -7,6 +7,7 @@ struct ResultView: View {
     @State private var before: UIImage?
     @State private var after: UIImage?
     @State private var loadFailed = false
+    @State private var showLeadForm = false
 
     var body: some View {
         ScrollView {
@@ -32,32 +33,29 @@ struct ResultView: View {
                         .background(Color.orange.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("What's included")
-                        .font(.headline)
-                    ForEach(upgradeLabels, id: \.self) { label in
-                        Label(label, systemImage: "checkmark.circle.fill")
-                            .foregroundStyle(.primary)
-                    }
-                    if let style = styleLabel {
-                        Label("\(style) style", systemImage: "paintpalette")
-                            .foregroundStyle(.secondary)
-                    }
+                if isShop {
+                    shopSection
+                } else {
+                    includedSection
+                    buildSection
                 }
 
                 if let after {
                     let image = Image(uiImage: after)
                     ShareLink(item: image, preview: SharePreview("Backyard \(design.modeLabel)", image: image)) {
-                        Label("Share with Customer", systemImage: "square.and.arrow.up")
+                        Label("Share", systemImage: "square.and.arrow.up")
                             .frame(maxWidth: .infinity)
                     }
-                    .buttonStyle(.borderedProminent)
+                    .buttonStyle(.bordered)
                 }
             }
             .padding()
         }
         .navigationTitle(design.modeLabel)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(isPresented: $showLeadForm) {
+            LeadFormView(design: design, model: model)
+        }
         .task(id: design.id) {
             let client = model.client
             before = await Self.loadImage(client.imageURL(design.beforeFile))
@@ -66,9 +64,87 @@ struct ResultView: View {
         }
     }
 
-    private var upgradeLabels: [String] {
-        guard let mode = model.config?.modes.first(where: { $0.id == design.mode }) else { return design.upgrades }
-        return mode.upgrades.filter { design.upgrades.contains($0.id) }.map(\.label)
+    // MARK: Sections
+
+    // Glow Up: each product with a link to buy it.
+    private var shopSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Shop this look")
+                .font(.headline)
+            ForEach(chosenUpgrades) { upgrade in
+                HStack {
+                    Text(upgrade.label)
+                    Spacer()
+                    if let url = upgrade.shopURL {
+                        Link("View on Amazon", destination: url)
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                    } else {
+                        Text("Link coming soon")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+            }
+            styleRow
+        }
+    }
+
+    // Glow Up Plus: what the contractor would build.
+    private var includedSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("What's included")
+                .font(.headline)
+            ForEach(chosenUpgrades) { upgrade in
+                Label(upgrade.label, systemImage: "checkmark.circle.fill")
+                    .foregroundStyle(.primary)
+            }
+            styleRow
+        }
+    }
+
+    private var buildSection: some View {
+        VStack(spacing: 8) {
+            Button {
+                showLeadForm = true
+            } label: {
+                Label("Get This Built", systemImage: "hammer")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 6)
+            }
+            .buttonStyle(.borderedProminent)
+
+            Text("A local contractor will contact you with a quote.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+    }
+
+    @ViewBuilder
+    private var styleRow: some View {
+        if let style = styleLabel {
+            Label("\(style) style", systemImage: "paintpalette")
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    // MARK: Catalog lookups
+
+    private var mode: Mode? {
+        model.mode(id: design.mode)
+    }
+
+    // Falls back to the plan id when the catalog hasn't loaded, so Glow Up Plus still offers "Get This Built".
+    private var isShop: Bool {
+        mode?.isShop ?? (design.mode != "glowupplus")
+    }
+
+    // The chosen items in catalog order, with their labels and shopping links.
+    private var chosenUpgrades: [Upgrade] {
+        guard let mode else { return design.upgrades.map { Upgrade(id: $0, label: $0, url: nil) } }
+        return mode.upgrades.filter { design.upgrades.contains($0.id) }
     }
 
     private var styleLabel: String? {

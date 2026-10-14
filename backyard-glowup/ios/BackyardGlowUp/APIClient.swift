@@ -22,12 +22,6 @@ struct APIClient {
         try await send(URLRequest(url: baseURL.appendingPathComponent("api/config")))
     }
 
-    func fetchGallery() async throws -> [Design] {
-        struct Response: Decodable { let items: [Design] }
-        let response: Response = try await send(URLRequest(url: baseURL.appendingPathComponent("api/gallery")))
-        return response.items
-    }
-
     func generate(photo: UIImage, modeID: String, upgradeIDs: [String], styleID: String) async throws -> Design {
         struct Body: Encodable {
             let image: String
@@ -47,6 +41,31 @@ struct APIClient {
             mode: modeID,
             upgrades: upgradeIDs,
             style: styleID
+        ))
+        return try await send(request)
+    }
+
+    // Sends a "Get This Built" request to the contractor. Empty phone, email, or notes
+    // mean "not given"; the server checks the same rules as the form.
+    func submitLead(designID: String, name: String, phone: String, email: String, zip: String, notes: String) async throws -> LeadReceipt {
+        struct Body: Encodable {
+            let designId: String
+            let name: String
+            let phone: String
+            let email: String
+            let zip: String
+            let notes: String
+        }
+        var request = URLRequest(url: baseURL.appendingPathComponent("api/leads"))
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONEncoder().encode(Body(
+            designId: designID,
+            name: name,
+            phone: phone,
+            email: email,
+            zip: zip,
+            notes: notes
         ))
         return try await send(request)
     }

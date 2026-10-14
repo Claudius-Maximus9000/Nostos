@@ -22,7 +22,6 @@ struct ContentView: View {
         }
         .task {
             await model.loadConfig()
-            await model.loadGallery()
         }
     }
 }
