@@ -19,8 +19,10 @@ on anything they need to do themselves (Apple account, App Store Connect, keys, 
 - `ios/project.yml`: XcodeGen spec. Run `xcodegen` in `ios/` to create the Xcode project.
 - `src/`: zero-dependency Node 22 server. `presets.js` is the plan/product catalog and prompt
   builder and the source of truth for plan ids, item ids, labels, and defaults.
-  `server.js` routes, `store.js` disk storage, `providers.js` image models (mock or
-  OpenAI-compatible).
+  `server.js` routes, `store.js` disk storage (and photo cleanup), `providers.js` image
+  models (mock or OpenAI-compatible), `limits.js` daily design limits, `email.js` the
+  new-request email to the owner (Resend).
+- `render.yaml`: Render Blueprint for hosting (Starter plan, 5 GB disk at `/var/data`).
 - `test/`: `node:test` suites. Run `npm test` from this folder.
 - `LAUNCH.md`: the plan for getting to the App Store, and what the owner has to do.
 
@@ -47,7 +49,17 @@ on anything they need to do themselves (Apple account, App Store Connect, keys, 
 - **The OpenAI key stays on the server**, never in the app.
 - **Privacy:** customers only see their own designs. The Gallery is saved on the phone
   (UserDefaults); `GET /api/gallery` and `GET /api/leads` are owner-only behind
-  `ADMIN_TOKEN`. Customer details are never written to logs.
+  `ADMIN_TOKEN`. Customer details are never written to logs. The new-request email goes
+  only to the owner, so it may carry them; its log lines carry only the request id.
+- **Cost control:** `POST /api/generate` has an in-memory per-IP and whole-server daily
+  limit, counted after validation and before the model call. OpenAI 429s become a 503
+  "lot of requests" message and give the design back (OpenAI charged nothing). The app
+  shows the server's `error` text as-is. `POST /api/leads` allows 5 per IP per day and
+  emails at most 90 a day (under Resend's free 100); past that, requests are saved but
+  not emailed. A request the disk can't save is emailed (awaited) as its only copy.
+- **Storage:** the model is asked for JPEG (`output_format=jpeg`), and saved files are
+  typed by their bytes. `RETENTION_DAYS` turns cleanup off only for `0`; a typo warns and
+  keeps 90, because the privacy policy promises the deletion.
 - **Server and app validation must match.** `LeadDraft.validationError` in
   `LeadFormView.swift` mirrors `leadProblem()` in `server.js`, rule for rule and message
   for message. Change both together.
