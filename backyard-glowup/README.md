@@ -63,13 +63,27 @@ Generated images are saved in `data/outputs/` and Glow Up Plus requests in `data
 
 ## 2. Set up the app in Xcode
 
+Quickest way, on a Mac with Xcode 16 or newer:
+
+```sh
+brew install xcodegen
+cd ios && xcodegen
+open BackyardGlowUp.xcodeproj
+```
+
+`ios/project.yml` already sets the iOS 17 minimum, the camera permission text, and the
+app name. Set your Apple team under **Signing & Capabilities** (or `DEVELOPMENT_TEAM` in
+`project.yml`) before running on a real iPhone.
+
+Or by hand, without XcodeGen:
+
 1. Xcode → **File → New → Project → iOS → App**.
    Product Name `BackyardGlowUp`, Interface **SwiftUI**, Language **Swift**.
 2. Set the target's **Minimum Deployment** to iOS 17.0 or later.
 3. Delete the template's `ContentView.swift` and `BackyardGlowUpApp.swift`.
 4. Drag every file from `ios/BackyardGlowUp/` into the project navigator (this includes
-   `LeadFormView.swift`, the Get This Built form). Tick **Copy items if needed** and your
-   app target.
+   `LeadFormView.swift`, the Get This Built form). Leave **Copy items if needed** unticked
+   so the project uses the files in this repository, and tick your app target.
 5. Target → **Info** tab → add **Privacy - Camera Usage Description** with text like
    "Take a photo of your backyard." Without this the app crashes when the camera opens.
 6. Run on the simulator. It reaches the server at `http://localhost:8080` by default.

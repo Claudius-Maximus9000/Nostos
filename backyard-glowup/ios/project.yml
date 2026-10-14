@@ -1,0 +1,37 @@
+# XcodeGen spec for the Backyard Glow Up iPhone app.
+# On a Mac: `brew install xcodegen`, then run `xcodegen` in this folder to create
+# BackyardGlowUp.xcodeproj. The project points at the Swift files in BackyardGlowUp/
+# in place, so edits stay in the repository.
+#
+# Before sending a build to TestFlight, set DEVELOPMENT_TEAM to your Apple team ID and
+# PRODUCT_BUNDLE_IDENTIFIER to the bundle ID you register in App Store Connect.
+name: BackyardGlowUp
+options:
+  bundleIdPrefix: com.yourcompany
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+targets:
+  BackyardGlowUp:
+    type: application
+    platform: iOS
+    sources:
+      - path: BackyardGlowUp
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.yourcompany.backyardglowup
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: ""
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: Backyard Glow Up
+        INFOPLIST_KEY_NSCameraUsageDescription: Take a photo of your backyard so we can show you what it could look like.
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+        INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
