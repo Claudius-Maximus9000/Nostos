@@ -1,0 +1,1266 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- The design the owner approved: a clickable copy of the app. Open it in a browser. -->
+<title>Backyard Glow Up</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&display=swap">
+<style>
+/* Layout: a phone on the left running the app, a short guide beside it. Below 820px the guide wraps around the phone. */
+:root {
+  /* Page around the phone */
+  --page: #edf1ea;
+  --page-ink: #1c281e;
+  --page-muted: #56655a;
+  --panel: #ffffff;
+  --rule: #d3dbd0;
+  --seg-bg: #dfe5db;
+  --seg-on: #ffffff;
+  --bezel: #1a1c1b;
+  --link: #1f7a3a;
+
+  /* iOS system colors used by the app */
+  --ios-bg: #ffffff;
+  --ios-grouped: #f2f2f7;
+  --ios-row: #ffffff;
+  --ios-label: #000000;
+  --ios-secondary: rgba(60, 60, 67, 0.6);
+  --ios-separator: rgba(60, 60, 67, 0.29);
+  --ios-fill: rgba(116, 116, 128, 0.08);
+  --ios-bar: rgba(249, 249, 249, 0.94);
+  --green: #34c759;
+  --green-soft: rgba(52, 199, 89, 0.15);
+  --on-green: #ffffff;
+  --orange: #ff9500;
+  --orange-soft: rgba(255, 149, 0, 0.15);
+  --red: #ff3b30;
+  --disabled-fill: rgba(120, 120, 128, 0.16);
+  --disabled-ink: rgba(60, 60, 67, 0.3);
+  --toast-bg: rgba(28, 28, 30, 0.92);
+  --toast-ink: #ffffff;
+  --scrim: rgba(0, 0, 0, 0.55);
+  --on-scrim: #ffffff;
+  --knob: #ffffff;
+  --knob-ink: #111111;
+  --island: #000000;
+  --backdrop: rgba(0, 0, 0, 0.3);
+
+  --font-display: "Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --page: #111512; --page-ink: #e4ebe3; --page-muted: #98a69a; --panel: #1b211c; --rule: #2b342d; --seg-bg: #232a24; --seg-on: #3d4a40; --bezel: #3a3e3b; --link: #6fd38b;
+    --ios-bg: #000000; --ios-grouped: #1c1c1e; --ios-row: #2c2c2e; --ios-label: #ffffff; --ios-secondary: rgba(235, 235, 245, 0.6);
+    --ios-separator: rgba(84, 84, 88, 0.6); --ios-fill: rgba(118, 118, 128, 0.24); --ios-bar: rgba(22, 22, 22, 0.94);
+    --green: #30d158; --green-soft: rgba(48, 209, 88, 0.18); --orange: #ff9f0a; --orange-soft: rgba(255, 159, 10, 0.2); --red: #ff453a;
+    --disabled-fill: rgba(118, 118, 128, 0.24); --disabled-ink: rgba(235, 235, 245, 0.3);
+    --toast-bg: rgba(235, 235, 240, 0.95); --toast-ink: #111111; --backdrop: rgba(0, 0, 0, 0.5);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --page: #111512; --page-ink: #e4ebe3; --page-muted: #98a69a; --panel: #1b211c; --rule: #2b342d; --seg-bg: #232a24; --seg-on: #3d4a40; --bezel: #3a3e3b; --link: #6fd38b;
+  --ios-bg: #000000; --ios-grouped: #1c1c1e; --ios-row: #2c2c2e; --ios-label: #ffffff; --ios-secondary: rgba(235, 235, 245, 0.6);
+  --ios-separator: rgba(84, 84, 88, 0.6); --ios-fill: rgba(118, 118, 128, 0.24); --ios-bar: rgba(22, 22, 22, 0.94);
+  --green: #30d158; --green-soft: rgba(48, 209, 88, 0.18); --orange: #ff9f0a; --orange-soft: rgba(255, 159, 10, 0.2); --red: #ff453a;
+  --disabled-fill: rgba(118, 118, 128, 0.24); --disabled-ink: rgba(235, 235, 245, 0.3);
+  --toast-bg: rgba(235, 235, 240, 0.95); --toast-ink: #111111; --backdrop: rgba(0, 0, 0, 0.5);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--page);
+  color: var(--page-ink);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 56px;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ---------- Page ---------- */
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 414px minmax(0, 1fr);
+  grid-template-areas: "device intro" "device notes";
+  grid-template-rows: auto 1fr;
+  column-gap: 64px;
+  row-gap: 28px;
+}
+.intro { grid-area: intro; padding-top: 48px; min-width: 0; }
+.device-wrap { grid-area: device; }
+.notes { grid-area: notes; min-width: 0; display: flex; flex-direction: column; gap: 28px; max-width: 460px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--page-muted); margin: 0 0 8px; }
+.intro h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(36px, 5vw, 52px); line-height: 1.02; letter-spacing: -0.02em; margin: 0 0 14px; text-wrap: balance; }
+.intro p { font-size: 17px; color: var(--page-muted); margin: 0; max-width: 44ch; }
+.note-block h2 { font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--page-muted); margin: 0 0 10px; }
+.note-block p { margin: 8px 0 0; color: var(--page-muted); font-size: 15px; }
+.note-block ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.note-block li { font-size: 15px; padding-left: 18px; position: relative; }
+.note-block li::before { content: ""; position: absolute; left: 2px; top: 0.62em; width: 7px; height: 7px; border-radius: 2px; background: var(--green); }
+.note-block a { color: var(--link); font-weight: 600; }
+.seg { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--seg-bg); gap: 2px; }
+.seg button { border: 0; background: none; padding: 7px 14px; border-radius: 8px; font-size: 14px; font-weight: 500; color: var(--page-ink); }
+.seg button[aria-pressed="true"] { background: var(--seg-on); box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14); }
+
+/* ---------- Phone ---------- */
+.device {
+  width: 414px; height: 868px; padding: 12px; border-radius: 62px; background: var(--bezel);
+  box-shadow: 0 40px 70px -30px rgba(15, 40, 22, 0.45), inset 0 0 0 2px rgba(255, 255, 255, 0.06);
+}
+.screen {
+  position: relative; height: 100%; border-radius: 50px; overflow: hidden; isolation: isolate;
+  background: var(--ios-bg); color: var(--ios-label); font-family: var(--font-ui);
+  display: flex; flex-direction: column; font-size: 17px; line-height: 1.3;
+}
+.status-bar { flex: none; height: 54px; position: relative; display: flex; align-items: center; justify-content: space-between; padding: 12px 32px 0 40px; font-size: 16px; font-weight: 600; }
+.status-icons { display: flex; gap: 6px; align-items: center; }
+.island { position: absolute; top: 11px; left: 50%; transform: translateX(-50%); width: 122px; height: 35px; border-radius: 20px; background: var(--island); }
+.view { flex: 1; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+.view::-webkit-scrollbar { display: none; }
+.tabbar { flex: none; height: 84px; display: flex; justify-content: space-around; padding-top: 7px; border-top: 0.5px solid var(--ios-separator); background: var(--ios-bar); }
+.tab { border: 0; background: none; display: flex; flex-direction: column; align-items: center; gap: 2px; width: 96px; color: var(--ios-secondary); font-size: 10px; font-weight: 500; }
+.tab[aria-selected="true"] { color: var(--green); }
+.tab svg { width: 28px; height: 28px; }
+.home-indicator { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); width: 136px; height: 5px; border-radius: 3px; background: var(--ios-label); z-index: 30; pointer-events: none; }
+
+/* Nav bars */
+.nav-large { padding: 0 16px 4px; }
+.nav-row { height: 44px; display: flex; justify-content: flex-end; align-items: center; }
+.icon-btn { border: 0; background: none; color: var(--green); width: 44px; height: 44px; display: grid; place-items: center; margin-right: -10px; }
+.icon-btn svg { width: 24px; height: 24px; }
+.large-title { font-size: 34px; font-weight: 700; letter-spacing: 0.01em; margin: 0; line-height: 1.2; }
+.nav-inline { position: sticky; top: 0; z-index: 3; height: 44px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 8px; background: var(--ios-bar); border-bottom: 0.5px solid var(--ios-separator); }
+.nav-inline h2 { margin: 0; font-size: 17px; font-weight: 600; }
+.back-btn { justify-self: start; border: 0; background: none; color: var(--green); display: flex; align-items: center; gap: 2px; font-size: 17px; padding: 6px 4px; }
+.back-btn svg { width: 22px; height: 22px; }
+
+/* Content */
+.content { padding: 16px 16px 32px; display: flex; flex-direction: column; gap: 28px; }
+.section { display: flex; flex-direction: column; gap: 12px; }
+.section-title { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; margin: 0; }
+.num { width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: var(--on-green); font-size: 12px; font-weight: 700; display: grid; place-items: center; flex: none; }
+
+.banner { display: flex; gap: 8px; align-items: flex-start; padding: 12px; border-radius: 12px; background: var(--orange-soft); font-size: 13px; line-height: 1.35; }
+.banner svg { width: 17px; height: 17px; flex: none; margin-top: 1px; }
+
+.photo-box { position: relative; height: 220px; border-radius: 16px; overflow: hidden; background: var(--ios-fill); display: grid; place-items: center; color: var(--ios-secondary); }
+.photo-box > svg, .photo-box > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chip-on-image { position: absolute; left: 10px; bottom: 10px; background: var(--scrim); color: var(--on-scrim); font-size: 12px; font-weight: 600; padding: 4px 9px; border-radius: 999px; }
+.link-btn { border: 0; background: none; color: var(--green); font-size: 15px; padding: 2px 0; align-self: flex-start; }
+
+.btn-row { display: flex; gap: 8px; }
+.btn-row > * { flex: 1 1 0; min-width: 0; }
+.btn-bordered { border: 0; border-radius: 10px; background: var(--green-soft); color: var(--green); font-size: 17px; padding: 8px 10px; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; cursor: pointer; }
+.btn-bordered svg { width: 19px; height: 19px; flex: none; }
+label.btn-bordered:focus-within { outline: 2px solid var(--green); outline-offset: 2px; }
+.btn-wide { width: 100%; }
+.btn-small { flex: none; font-size: 15px; padding: 5px 11px; border-radius: 8px; }
+
+.plans { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.plan { text-align: left; border: 0; padding: 14px; border-radius: 16px; background: var(--ios-grouped); color: var(--ios-label); min-height: 150px; display: flex; flex-direction: column; gap: 8px; box-shadow: inset 0 0 0 2px transparent; }
+.plan[aria-pressed="true"] { background: var(--green-soft); box-shadow: inset 0 0 0 2px var(--green); }
+.plan svg { width: 24px; height: 24px; }
+.plan-label { font-size: 17px; font-weight: 600; }
+.plan-blurb { font-size: 12px; color: var(--ios-secondary); line-height: 1.35; }
+
+.list { background: var(--ios-grouped); border-radius: 14px; overflow: hidden; }
+.list-row { position: relative; width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 14px; border: 0; background: none; text-align: left; font-size: 17px; color: var(--ios-label); }
+.list-row + .list-row::before { content: ""; position: absolute; top: 0; left: 14px; right: 0; height: 0.5px; background: var(--ios-separator); }
+.check { width: 22px; height: 22px; flex: none; }
+.check.on { color: var(--green); }
+.check.off { color: var(--ios-secondary); }
+
+.chips { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; border: 0; border-radius: 999px; padding: 8px 14px; font-size: 15px; font-weight: 500; background: var(--ios-grouped); color: var(--ios-label); }
+.chip[aria-pressed="true"] { background: var(--green); color: var(--on-green); }
+@media (hover: hover) and (pointer: fine) { .chips { flex-wrap: wrap; overflow-x: visible; } }
+
+.gen { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.btn-prominent { width: 100%; border: 0; border-radius: 12px; background: var(--green); color: var(--on-green); font-size: 17px; font-weight: 600; padding: 14px 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-prominent svg { width: 20px; height: 20px; }
+.btn-prominent:disabled { background: var(--disabled-fill); color: var(--disabled-ink); cursor: default; }
+.hint { font-size: 13px; color: var(--ios-secondary); text-align: center; margin: 0; }
+.error { font-size: 13px; color: var(--red); text-align: center; margin: 0; }
+.spinner { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid var(--disabled-ink); border-top-color: var(--ios-secondary); animation: spin 0.8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .spinner { animation-duration: 2.4s; } .sheet { animation: none !important; } }
+
+/* Result */
+.compare { position: relative; width: 100%; max-width: 100%; border-radius: 16px; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-select: none; cursor: ew-resize; background: var(--ios-fill); }
+.compare:focus-within { outline: 2px solid var(--green); outline-offset: 2px; }
+.layer { position: absolute; inset: 0; }
+.layer > svg, .layer > img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+.handle { position: absolute; top: 0; bottom: 0; width: 3px; transform: translateX(-50%); background: var(--knob); box-shadow: 0 0 4px rgba(0, 0, 0, 0.35); pointer-events: none; }
+.knob { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 36px; height: 36px; border-radius: 50%; background: var(--knob); color: var(--knob-ink); display: grid; place-items: center; box-shadow: 0 1px 6px rgba(0, 0, 0, 0.35); }
+.knob svg { width: 18px; height: 18px; }
+.tag { position: absolute; top: 10px; font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 999px; background: var(--scrim); color: var(--on-scrim); pointer-events: none; }
+.tag.l { left: 10px; } .tag.r { right: 10px; }
+.note { display: flex; gap: 8px; align-items: flex-start; padding: 12px; border-radius: 12px; background: var(--orange-soft); font-size: 13px; line-height: 1.35; }
+.note svg { width: 17px; height: 17px; flex: none; margin-top: 1px; }
+.included { display: flex; flex-direction: column; gap: 8px; }
+.included h3 { margin: 0; font-size: 17px; font-weight: 600; }
+.inc-row { display: flex; align-items: center; gap: 10px; font-size: 17px; }
+.inc-row svg { width: 20px; height: 20px; flex: none; }
+.inc-row.muted { color: var(--ios-secondary); }
+.shop-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-size: 17px; min-height: 32px; }
+.soon { flex: none; font-size: 15px; color: var(--ios-secondary); }
+.build { display: flex; flex-direction: column; gap: 8px; }
+
+/* Gallery */
+.grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 16px; }
+.tile { border: 0; background: none; text-align: left; padding: 0; display: flex; flex-direction: column; gap: 6px; color: var(--ios-label); }
+.thumb { position: relative; height: 150px; width: 100%; border-radius: 12px; overflow: hidden; background: var(--ios-grouped); }
+.thumb > svg, .thumb > img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb .chip-on-image { top: 8px; bottom: auto; left: 8px; font-size: 11px; }
+.tile-label { font-size: 15px; font-weight: 700; }
+.tile-date { font-size: 12px; color: var(--ios-secondary); margin-top: -4px; }
+.empty { padding: 80px 32px; text-align: center; color: var(--ios-secondary); }
+
+/* Sheets: Settings and Get This Built */
+.backdrop { position: absolute; inset: 0; background: var(--backdrop); z-index: 10; }
+.sheet { position: absolute; left: 0; right: 0; bottom: 0; top: 58px; z-index: 11; border-radius: 12px 12px 0 0; background: var(--ios-grouped); display: flex; flex-direction: column; animation: sheet-up 0.32s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes sheet-up { from { transform: translateY(100%); } to { transform: none; } }
+.sheet-nav { height: 56px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; padding: 0 16px; }
+.sheet-nav h2 { margin: 0; font-size: 17px; font-weight: 600; }
+.text-btn { border: 0; background: none; color: var(--green); font-size: 17px; padding: 6px 0; }
+.text-btn.l { justify-self: start; } .text-btn.r { justify-self: end; font-weight: 600; }
+.text-btn:disabled { color: var(--disabled-ink); cursor: default; }
+.sheet-nav .spinner { justify-self: end; }
+.form { padding: 0 16px 24px; overflow-y: auto; }
+.form fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+.form fieldset:disabled :is(input, textarea) { opacity: 0.5; }
+.form-h { font-size: 13px; text-transform: uppercase; color: var(--ios-secondary); padding: 18px 16px 6px; margin: 0; font-weight: 400; }
+.form-row { background: var(--ios-row); border-radius: 10px; padding: 11px 16px; display: flex; align-items: center; gap: 10px; font-size: 17px; }
+.form-row input, .form-row textarea { border: 0; background: transparent; width: 100%; font: inherit; color: var(--ios-label); padding: 0; }
+.form-row textarea { resize: none; line-height: 1.3; field-sizing: content; min-height: 3lh; max-height: 8lh; }
+.form-row input:focus, .form-row textarea:focus { outline: none; }
+.form-row:focus-within { box-shadow: inset 0 0 0 2px var(--green); }
+.form-row svg { width: 20px; height: 20px; flex: none; }
+.form-group { background: var(--ios-row); border-radius: 10px; overflow: hidden; }
+.form-group .form-row { position: relative; border-radius: 0; }
+.form-group .form-row + .form-row::before { content: ""; position: absolute; top: 0; left: 16px; right: 0; height: 0.5px; background: var(--ios-separator); }
+.form-f { font-size: 13px; color: var(--ios-secondary); padding: 6px 16px 0; margin: 0; line-height: 1.35; }
+.form-error { font-size: 13px; color: var(--red); padding: 16px 16px 0; margin: 0; line-height: 1.35; }
+.form-error:empty { display: none; }
+.sent { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 24px 24px 64px; text-align: center; }
+.sent > svg { width: 64px; height: 64px; color: var(--green); }
+.sent h3 { margin: 0; font-size: 22px; font-weight: 700; }
+.sent p { margin: 0; color: var(--ios-secondary); }
+.sent .btn-prominent { margin-top: 8px; }
+.status-ok { color: var(--green); } .status-warn { color: var(--orange); } .status-bad { color: var(--red); }
+
+.toast { position: absolute; left: 50%; bottom: 100px; transform: translateX(-50%); z-index: 20; width: max-content; max-width: calc(100% - 40px); padding: 10px 14px; border-radius: 14px; background: var(--toast-bg); color: var(--toast-ink); font-size: 14px; line-height: 1.35; text-align: center; pointer-events: none; }
+
+/* ---------- Narrow screens: drop the bezel, show the app as a card ---------- */
+@media (max-width: 820px) {
+  body { padding-block: 20px 40px; }
+  .page { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "device" "notes"; grid-template-rows: auto; row-gap: 24px; }
+  .intro { padding-top: 0; }
+  .device { width: 100%; max-width: 430px; height: 760px; height: min(820px, 84svh); margin: 0 auto; padding: 0; border-radius: 0; background: none; box-shadow: none; }
+  .screen { border-radius: 24px; box-shadow: 0 0 0 1px var(--rule), 0 20px 40px -24px rgba(15, 40, 22, 0.35); }
+  .status-bar, .home-indicator { display: none; }
+  .nav-large { padding-top: 6px; }
+  .sheet { top: 20px; }
+  .tabbar { height: 64px; }
+  .toast { bottom: 80px; }
+  .notes { max-width: none; }
+}
+</style>
+
+<div class="page">
+  <header class="intro">
+    <p class="eyebrow">iPhone app preview</p>
+    <h1>Backyard Glow Up</h1>
+    <p>Tap through it like your customers will: pick a plan, choose what to add, then drag the slider to compare before and after.</p>
+  </header>
+
+  <div class="device-wrap">
+    <div class="device">
+      <div class="screen" id="screen">
+        <div class="status-bar" aria-hidden="true">
+          <span>9:41</span>
+          <span class="island"></span>
+          <span class="status-icons">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="8" width="3" height="4" rx="1"/><rect x="5" y="5.5" width="3" height="6.5" rx="1"/><rect x="10" y="3" width="3" height="9" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1"/></svg>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><path d="M8 2.6c2.2 0 4.2.9 5.7 2.3l1.1-1.1A9.6 9.6 0 0 0 8 1 9.6 9.6 0 0 0 1.2 3.8l1.1 1.1A8 8 0 0 1 8 2.6Zm0 3.2c1.3 0 2.5.5 3.4 1.3l1.1-1.1A6.4 6.4 0 0 0 8 4.2c-1.7 0-3.3.7-4.5 1.8l1.1 1.1c.9-.8 2.1-1.3 3.4-1.3Zm0 3.2c-.5 0-1 .2-1.3.5L8 10.8l1.3-1.3C9 9.2 8.5 9 8 9Z"/></svg>
+            <svg width="27" height="13" viewBox="0 0 27 13" fill="none"><rect x="0.5" y="0.5" width="23" height="12" rx="3.5" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="currentColor"/><path d="M25 4.5v4c.8-.3 1.3-1.1 1.3-2s-.5-1.7-1.3-2Z" fill="currentColor" opacity=".45"/></svg>
+          </span>
+        </div>
+        <div class="view" id="view"></div>
+        <nav class="tabbar" role="tablist" aria-label="App sections">
+          <button class="tab" role="tab" id="tab-design" data-action="tab" data-value="design">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 14 10"/><path d="M12.5 8.5l3 3"/><path d="M17 2.5v3M15.5 4h3M20.5 7.5v2.5M19.25 8.75h2.5M9 3v2M8 4h2"/></svg>
+            Design
+          </button>
+          <button class="tab" role="tab" id="tab-gallery" data-action="tab" data-value="gallery">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="3.5" width="14" height="12" rx="2"/><path d="M3.5 7.5v10a3 3 0 0 0 3 3h10"/><path d="m9 13 3.2-3.5 2.6 2.6 1.7-1.6 2.5 2.5"/><circle cx="11" cy="7.3" r="1.2"/></svg>
+            Gallery
+          </button>
+        </nav>
+        <div class="home-indicator" aria-hidden="true"></div>
+        <div id="overlay"></div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes">
+    <section class="note-block">
+      <h2>Server</h2>
+      <div class="seg" role="group" aria-label="Server state">
+        <button type="button" id="ai-on" data-ai="on" aria-pressed="true">AI on</button>
+        <button type="button" id="ai-off" data-ai="off" aria-pressed="false">No AI key yet</button>
+      </div>
+      <p>Switch to see what the app shows before your OpenAI key is set up on the server.</p>
+    </section>
+    <section class="note-block">
+      <h2>The two plans</h2>
+      <ul>
+        <li><strong>Glow Up</strong>: the AI adds products to the customer's yard photo. Each item links to your Amazon store.</li>
+        <li><strong>Glow Up Plus</strong>: a full makeover your company builds. The customer taps Get This Built to send you a quote request.</li>
+      </ul>
+    </section>
+    <section class="note-block">
+      <h2>What's real here</h2>
+      <ul>
+        <li>The screens, buttons, wording, and item lists match the app code you'll open in Xcode.</li>
+        <li>The yard pictures are drawings so you can try the slider. In the real app, the after picture comes from the AI image model and looks like a photo of the customer's yard.</li>
+        <li>You can try your own photo. It stays in your browser. Since no AI is connected to this preview, the after picture is your original photo.</li>
+        <li>Once you add your product links, View on Amazon opens each product in your store. Share opens the iPhone share sheet. Here both show a short message instead.</li>
+        <li>Get This Built saves the customer's details and design on your server. Here nothing is sent.</li>
+      </ul>
+    </section>
+    <section class="note-block">
+      <h2>Run the real app</h2>
+      <p>Open the project in Xcode on a Mac and follow the README in the <code>backyard-glowup</code> folder.</p>
+      <p><a href="https://github.com/Claudius-Maximus9000/Nostos/pull/1" target="_blank" rel="noopener">View the code on GitHub</a></p>
+    </section>
+  </aside>
+</div>
+
+<script>
+(() => {
+  // Mirrors publicModes() in backyard-glowup/src/presets.js, which the app loads from the server.
+  // No product links or AMAZON_STORE_URL are set up yet, so every url is null.
+  const MODES = [
+    {
+      id: 'glowup', kind: 'shop', label: 'Glow Up',
+      blurb: 'Shop the look. Products picked for your yard, ready to order from Amazon.',
+      upgrades: [
+        { id: 'lights', label: 'Outdoor string lights', url: null },
+        { id: 'seating', label: 'Patio conversation set', url: null },
+        { id: 'rug', label: 'Outdoor rug', url: null },
+        { id: 'umbrella', label: 'Patio umbrella', url: null },
+        { id: 'planters', label: 'Planters with flowers', url: null },
+        { id: 'firebowl', label: 'Fire pit bowl', url: null },
+        { id: 'pathlights', label: 'Solar path lights', url: null },
+        { id: 'hammock', label: 'Hammock with stand', url: null },
+      ],
+      defaultUpgrades: ['lights', 'seating', 'planters'],
+    },
+    {
+      id: 'glowupplus', kind: 'contractor', label: 'Glow Up Plus',
+      blurb: 'Done for you. A local contractor builds the whole transformation.',
+      upgrades: [
+        { id: 'landscaping', label: 'New sod and landscaping', url: null },
+        { id: 'deck', label: 'New composite deck', url: null },
+        { id: 'pergola', label: 'Pergola with climbing plants', url: null },
+        { id: 'firepit', label: 'Stone fire pit with seating', url: null },
+        { id: 'beds', label: 'Raised garden beds', url: null },
+        { id: 'fence', label: 'Privacy fence and screening', url: null },
+        { id: 'kitchen', label: 'Outdoor kitchen counter', url: null },
+        { id: 'pool', label: 'Small plunge pool', url: null },
+      ],
+      defaultUpgrades: ['landscaping', 'deck', 'pergola', 'firepit'],
+    },
+  ];
+  // With no links the app shows "Link coming soon". The preview stands in a store link
+  // instead, so the View on Amazon button can be tried.
+  const DEMO_STORE_URL = '#your-amazon-store';
+  // Mirrors the contractor block of /api/config. Neither CONTRACTOR_NAME nor CONTRACTOR_PHONE is set here.
+  const CONTRACTOR = { name: null, phone: null };
+  const STYLES = [
+    { id: 'modern', label: 'Modern' },
+    { id: 'cottage', label: 'Cottage' },
+    { id: 'rustic', label: 'Rustic' },
+    { id: 'tropical', label: 'Tropical' },
+  ];
+  const DEFAULT_SERVER = 'http://localhost:8080';
+
+  // ---------- Icons (approximations of the SF Symbols the app uses) ----------
+  const I = {
+    gear: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/><circle cx="12" cy="12" r="6.6"/></svg>',
+    camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 8.5a2 2 0 0 1 2-2h2.2l1.5-2h5.6l1.5 2h2.2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+    photos: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="3.5" width="14" height="12" rx="2"/><path d="M3.5 7.5v10a3 3 0 0 0 3 3h10"/><path d="m9 13 3.2-3.5 2.6 2.6 1.7-1.6 2.5 2.5"/></svg>',
+    photoPlus: '<svg viewBox="0 0 24 24" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5.5" width="15" height="13" rx="2"/><path d="m5 16 4-4.5 3 3 1.8-1.8 3.2 3.3"/><circle cx="7.5" cy="9.5" r="1.3"/><path d="M20 2.5v6M17 5.5h6"/></svg>',
+    bag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5.2 8h13.6l-.9 11.3a1.6 1.6 0 0 1-1.6 1.5H7.7a1.6 1.6 0 0 1-1.6-1.5z"/><path d="M8.7 10.5V7a3.3 3.3 0 0 1 6.6 0v3.5"/></svg>',
+    hammer: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(45 12 12)"><path d="M9 3.8h8.4A1.6 1.6 0 0 1 19 5.4v2.7a1.6 1.6 0 0 1-1.6 1.6H9L4 7.6V5.9z"/><rect x="10.3" y="9.7" width="3.4" height="11.3" rx="1.7"/></g></svg>',
+    wand: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5 14 10"/><path d="M12.5 8.5l3 3"/><path d="M17 2.5v3M15.5 4h3M20.5 7.5v2.5M19.25 8.75h2.5M9 3v2M8 4h2"/></svg>',
+    checkOn: '<svg class="check on" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.3 3 3 6-6.3" fill="none" stroke="var(--on-green)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    checkOff: '<svg class="check off" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>',
+    checkFill: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="m7.5 12.3 3 3 6-6.3" fill="none" stroke="var(--ios-bg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    info: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M12 10.5v6.5" stroke="var(--ios-bg)" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="7.3" r="1.4" fill="var(--ios-bg)"/></svg>',
+    infoLine: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.4"/><path d="M12 10.8v6"/><circle cx="12" cy="7.4" r=".6" fill="currentColor"/></svg>',
+    xCircle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.4"/><path d="m8.8 8.8 6.4 6.4M15.2 8.8l-6.4 6.4"/></svg>',
+    okCircle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.4"/><path d="m7.8 12.3 3 3 5.6-6"/></svg>',
+    chevronLeft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4.5 7.5 12l7.5 7.5"/></svg>',
+    share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M8 7l4-4 4 4"/><path d="M8.5 10.5H6v10h12v-10h-2.5"/></svg>',
+    arrows: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 12h17M7.5 8l-4 4 4 4M16.5 8l4 4-4 4"/></svg>',
+    palette: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5a8.5 8.5 0 1 0 0 17c1.2 0 1.8-.8 1.8-1.7 0-1.2-1-1.6-1-2.6 0-1 .8-1.7 1.8-1.7h2.2c2.2 0 3.7-1.6 3.7-3.8 0-4-3.8-7.2-8.5-7.2Z"/><circle cx="7.8" cy="11" r="1.1" fill="currentColor"/><circle cx="10.5" cy="7.5" r="1.1" fill="currentColor"/><circle cx="15" cy="7.8" r="1.1" fill="currentColor"/></svg>',
+  };
+
+  // ---------- Sample yard drawing ----------
+  // One function draws both "before" and "after" so the two line up exactly under the slider.
+  // Like the real prompt ("only change the parts of the yard described"), the after drawing
+  // changes only the items that were picked. The patio products and the deck and pergola sit on
+  // the right half, and the lawn products, fire pit, and pool on the left, so the slider's 50%
+  // start already shows the main changes.
+  const PALETTES = {
+    natural: { wood: '#a8754a', woodDark: '#7a5333', flower1: '#f2c94c', flower2: '#e86f8a', stone: '#a49e93', cushion: '#ece4d2', rug: '#5d7f8f', pot: '#b8653b' },
+    modern: { wood: '#77706a', woodDark: '#4e4a46', flower1: '#f5f5f0', flower2: '#c8d8cf', stone: '#bcb8b1', cushion: '#3d4b53', rug: '#dcd8cf', pot: '#3f4447' },
+    cottage: { wood: '#c9ab88', woodDark: '#9f8467', flower1: '#f3a6c0', flower2: '#b9a2e3', stone: '#cbc2b4', cushion: '#f6efe2', rug: '#8fa9c4', pot: '#e9dfd1' },
+    rustic: { wood: '#8d5a33', woodDark: '#62401f', flower1: '#f0a33a', flower2: '#e5d25a', stone: '#8d8579', cushion: '#b86b3e', rug: '#4f5b3b', pot: '#7b5235' },
+    tropical: { wood: '#b7773c', woodDark: '#8a5526', flower1: '#ff5f7e', flower2: '#ffb02e', stone: '#d8c9a9', cushion: '#2f8f83', rug: '#f0d9a8', pot: '#c97a3a' },
+  };
+  const f = (n) => Math.round(n * 10) / 10;
+  function rng(seed) {
+    let a = seed >>> 0;
+    return () => {
+      a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  let uid = 0;
+
+  function yardSVG({ after = false, mode = 'glowup', upgrades = [], style = '' } = {}) {
+    const u = 'y' + ++uid;
+    const set = new Set(after ? upgrades : []);
+    const has = (id) => set.has(id);
+    // Glow Up Plus landscaping: new sod, debris cleared, hedge trimmed, and fresh mulch in the bed.
+    const landscaped = has('landscaping');
+    const MIRROR = 'matrix(-1 0 0 1 400 0)';
+    const P = after ? PALETTES[style] || PALETTES.natural : PALETTES.natural;
+    const o = [];
+    const label = after ? 'Drawing of the yard after the work' : 'Drawing of the yard before any work';
+
+    o.push(`<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${label}" xmlns="http://www.w3.org/2000/svg">`);
+    o.push(`<defs><linearGradient id="${u}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a6d6f1"/><stop offset="1" stop-color="#e7f5fb"/></linearGradient><clipPath id="${u}l"><rect x="0" y="124" width="400" height="176"/></clipPath></defs>`);
+    o.push(`<rect width="400" height="130" fill="url(#${u}s)"/>`);
+    o.push('<g fill="#ffffff" opacity=".85"><ellipse cx="80" cy="30" rx="28" ry="8"/><ellipse cx="98" cy="25" rx="17" ry="8"/><ellipse cx="300" cy="40" rx="34" ry="7"/><ellipse cx="318" cy="34" rx="15" ry="7"/></g>');
+
+    // Trees behind the fence
+    const rt = rng(7);
+    for (let x = -10; x < 420; x += 32) {
+      const ry = 18 + rt() * 14;
+      o.push(`<ellipse cx="${x}" cy="${f(92 - ry * 0.45)}" rx="${f(21 + rt() * 9)}" ry="${f(ry)}" fill="${rt() < 0.5 ? '#5d8d4c' : '#6c9a56'}"/>`);
+    }
+    if (after && style === 'tropical') {
+      for (const x of [58, 338]) {
+        o.push(`<path d="M${x} 126 Q ${x - 7} 90 ${x + 8} 50" stroke="#8b6a43" stroke-width="4" fill="none" stroke-linecap="round"/>`);
+        for (const a of [-170, -135, -100, -65, -30, 5]) {
+          o.push(`<ellipse cx="${x + 8}" cy="50" rx="21" ry="4.5" fill="#3d8c48" transform="rotate(${a} ${x + 8} 50) translate(17 0)"/>`);
+        }
+      }
+    }
+
+    // Fence
+    if (has('fence')) {
+      o.push(`<rect x="0" y="70" width="400" height="58" fill="${P.woodDark}"/>`);
+      for (let i = 0; i < 7; i++) o.push(`<rect x="0" y="${72 + i * 8}" width="400" height="6" fill="${P.wood}"/>`);
+      for (let x = 0; x <= 400; x += 100) o.push(`<rect x="${x - 3}" y="67" width="6" height="61" fill="${P.woodDark}"/>`);
+      for (const x of [262, 292, 322, 352, 382]) {
+        o.push(`<ellipse cx="${x}" cy="99" rx="11" ry="27" fill="#3b7b38"/><ellipse cx="${x - 3}" cy="95" rx="6" ry="20" fill="#4c9245"/>`);
+      }
+    } else {
+      const rf = rng(11);
+      o.push('<rect x="0" y="88" width="400" height="4" fill="#857c6b"/><rect x="0" y="112" width="400" height="4" fill="#857c6b"/>');
+      for (let x = 2; x < 400; x += 13) {
+        const skip = rf() < 0.07;
+        const tilt = rf() < 0.14 ? rf() * 10 - 5 : 0;
+        const top = 78 + rf() * 5;
+        const shade = rf() < 0.3 ? '#8f8676' : '#a39a89';
+        if (skip) continue;
+        o.push(`<rect x="${x}" y="${f(top)}" width="10" height="${f(128 - top)}" fill="${shade}" transform="rotate(${f(tilt)} ${x + 5} 128)"/>`);
+      }
+    }
+
+    // Lawn
+    if (landscaped) {
+      o.push('<rect x="0" y="124" width="400" height="176" fill="#58a646"/>');
+      o.push(`<g clip-path="url(#${u}l)" fill="#66b552">`);
+      for (let i = -6; i < 12; i += 2) {
+        const x = i * 40;
+        o.push(`<polygon points="${x},124 ${x + 40},124 ${x + 110},300 ${x + 70},300"/>`);
+      }
+      o.push('</g>');
+    } else {
+      o.push('<rect x="0" y="124" width="400" height="176" fill="#a3ad57"/>');
+      const rp = rng(23);
+      for (let i = 0; i < 9; i++) {
+        o.push(`<ellipse cx="${f(rp() * 400)}" cy="${f(140 + rp() * 150)}" rx="${f(20 + rp() * 30)}" ry="${f(6 + rp() * 8)}" fill="${rp() < 0.5 ? '#b4a85a' : '#8e9a45'}" opacity=".8"/>`);
+      }
+      const rg = rng(31);
+      let d = '';
+      for (let i = 0; i < 80; i++) {
+        const x = rg() * 400;
+        const y = 134 + rg() * 162;
+        const s = 0.7 + (y - 130) / 150;
+        d += `M${f(x)} ${f(y)}l${f(2 * s)} ${f(-7 * s)}l${f(1.5 * s)} ${f(7 * s)}l${f(2 * s)} ${f(-6 * s)}l${f(1.5 * s)} ${f(6 * s)}`;
+      }
+      o.push(`<path d="${d}" stroke="#76822f" stroke-width="1.3" fill="none" stroke-linejoin="round"/>`);
+    }
+
+    // Garden bed along the fence
+    if (has('beds')) {
+      for (const bx of [78, 152]) {
+        o.push(`<ellipse cx="${bx + 30}" cy="127" rx="30" ry="9" fill="#4d8d3e"/>`);
+        for (let k = 0; k < 7; k++) {
+          o.push(`<circle cx="${bx + 6 + k * 8}" cy="${123 + (k % 2) * 4}" r="3" fill="${k % 2 ? P.flower1 : P.flower2}"/>`);
+        }
+        o.push(`<rect x="${bx}" y="129" width="60" height="17" fill="${P.wood}"/><rect x="${bx}" y="129" width="60" height="3" fill="${P.woodDark}"/>`);
+      }
+    } else {
+      o.push(`<rect x="72" y="124" width="150" height="18" rx="6" fill="${landscaped ? '#4a3324' : '#8b6b4b'}"/>`);
+      if (landscaped) {
+        for (const x of [92, 130, 168, 204]) o.push(`<ellipse cx="${x}" cy="126" rx="12" ry="8" fill="#4d8d3e"/>`);
+        for (const [x, c] of [[110, P.flower1], [148, P.flower2], [186, P.flower1], [98, P.flower2], [176, P.flower2]]) {
+          o.push(`<circle cx="${x}" cy="130" r="2.6" fill="${c}"/>`);
+        }
+      } else {
+        o.push('<path d="M86 135l2-8 2 8M118 133l1.5-9 2 9M160 136l2-7 2 7M196 134l1.5-8 2 8M140 131l-3-10M178 131l3-11" stroke="#6b7f35" stroke-width="1.4" fill="none"/>');
+      }
+    }
+
+    // Hedge
+    if (landscaped) {
+      o.push('<rect x="244" y="102" width="152" height="38" rx="16" fill="#3d7934"/><rect x="250" y="104" width="140" height="10" rx="5" fill="#4a8a3f"/>');
+    } else {
+      const rh = rng(41);
+      const greens = ['#5a7a33', '#6a893b', '#7c893f', '#8a7c45'];
+      for (let i = 0; i < 36; i++) {
+        o.push(`<circle cx="${f(244 + rh() * 152)}" cy="${f(104 + rh() * 34)}" r="${f(8 + rh() * 9)}" fill="${greens[Math.floor(rh() * 4)]}"/>`);
+      }
+      o.push('<path d="M262 98l-4-10M300 96l2-12M338 99l5-9M372 97l-1-11" stroke="#6b5a35" stroke-width="1.3"/>');
+    }
+
+    // Leaves and sticks on the ground until someone clears them. Drawn before the pool,
+    // fire pit, patio/deck, and products so nothing new is ever covered in old debris.
+    if (!landscaped) {
+      const rd = rng(53);
+      const leafColors = ['#c9772d', '#a8552a', '#d9a441', '#9c6b2f'];
+      for (let i = 0; i < 48; i++) {
+        const x = rd() * 400;
+        const y = 132 + rd() * 165;
+        o.push(`<ellipse cx="${f(x)}" cy="${f(y)}" rx="3.4" ry="1.8" fill="${leafColors[Math.floor(rd() * 4)]}" transform="rotate(${Math.floor(rd() * 180)} ${f(x)} ${f(y)})"/>`);
+      }
+      for (let i = 0; i < 8; i++) {
+        const x = rd() * 380;
+        const y = 150 + rd() * 140;
+        o.push(`<line x1="${f(x)}" y1="${f(y)}" x2="${f(x + 10 + rd() * 12)}" y2="${f(y + rd() * 6 - 3)}" stroke="#6b4a2f" stroke-width="1.8" stroke-linecap="round"/>`);
+      }
+    }
+
+    // Plunge pool
+    if (has('pool')) {
+      o.push('<g transform="translate(-98 0)">');
+      o.push(`<rect x="138" y="156" width="124" height="46" rx="5" fill="${P.stone}"/><rect x="146" y="162" width="108" height="34" rx="3" fill="#43ade0"/>`);
+      o.push('<path d="M156 172q8-4 16 0t16 0t16 0M196 186q8-4 16 0t16 0" stroke="#a2ddf4" stroke-width="2" fill="none"/>');
+      o.push('</g>');
+    }
+
+    // Fire pit with two chairs
+    if (has('firepit')) {
+      o.push(`<g transform="${MIRROR}">`);
+      for (const [cx, cy] of [[276, 214], [352, 220]]) {
+        o.push(`<rect x="${cx}" y="${cy}" width="22" height="20" rx="3" fill="${P.cushion}" stroke="${P.woodDark}" stroke-width="2"/>`);
+        o.push(`<rect x="${cx - 3}" y="${cy + 18}" width="28" height="8" rx="2" fill="${P.woodDark}"/>`);
+        o.push(`<rect x="${cx - 1}" y="${cy + 26}" width="3" height="7" fill="${P.woodDark}"/><rect x="${cx + 20}" y="${cy + 26}" width="3" height="7" fill="${P.woodDark}"/>`);
+      }
+      o.push('<ellipse cx="322" cy="250" rx="48" ry="18" fill="#ffb347" opacity=".2"/>');
+      o.push(`<ellipse cx="322" cy="255" rx="28" ry="10" fill="${P.stone}"/><ellipse cx="322" cy="252" rx="20" ry="6" fill="#3b302a"/>`);
+      o.push('<path d="M311 252q2-15 11-21q-2 9 4 12q2-6 0-10q10 8 6 19z" fill="#ff8c2b"/><path d="M317 252q1-8 5-11q0 5 3 6q2 3-1 5z" fill="#ffd34a"/>');
+      o.push('</g>');
+    }
+
+    // Glow Up products on the lawn: hammock on the left, fire bowl left of center, path lights along the front
+    if (has('hammock')) {
+      o.push('<g data-item="hammock">');
+      o.push('<path d="M22 232H116M34 232 22 182M104 232l12-50" stroke="#3c3f42" stroke-width="3.2" fill="none" stroke-linecap="round"/>');
+      o.push('<path d="M22 182l12 12M116 182l-12 12" stroke="#6b5a45" stroke-width="1.2"/>');
+      o.push(`<path d="M34 194Q69 214 104 194Q69 236 34 194Z" fill="${P.rug}"/><path d="M38 197Q69 220 100 197" stroke="${P.cushion}" stroke-width="1.6" fill="none"/>`);
+      o.push('</g>');
+    }
+    if (has('firebowl')) {
+      o.push('<g data-item="firebowl">');
+      o.push('<ellipse cx="160" cy="238" rx="34" ry="11" fill="#ffb347" opacity=".22"/>');
+      o.push('<path d="M150 236l-4 10M170 236l4 10M160 238v9" stroke="#2b2b2e" stroke-width="2.4" stroke-linecap="round"/>');
+      o.push('<path d="M141 228Q160 252 179 228Z" fill="#2b2b2e"/><ellipse cx="160" cy="228" rx="19" ry="4.5" fill="#4a4a4f"/><ellipse cx="160" cy="228" rx="15" ry="3" fill="#1d1b1a"/>');
+      o.push('<path d="M150 228q2-15 11-21q-2 9 4 12q2-6 0-10q10 8 6 19z" fill="#ff8c2b"/><path d="M156 228q1-8 5-11q0 5 3 6q2 3-1 5z" fill="#ffd34a"/>');
+      o.push('</g>');
+    }
+    if (has('pathlights')) {
+      o.push('<g data-item="pathlights">');
+      for (let x = 18; x < 210; x += 26) {
+        o.push(`<ellipse cx="${x}" cy="289" rx="11" ry="3.5" fill="#ffe08a" opacity=".4"/><circle cx="${x}" cy="272" r="8" fill="#ffe08a" opacity=".35"/>`);
+        o.push(`<rect x="${x - 1.5}" y="275" width="3" height="14" fill="#2f3133"/><rect x="${x - 4}" y="269" width="8" height="7" rx="1.5" fill="#fff1bf"/><rect x="${x - 4.5}" y="267" width="9" height="2.5" rx="1" fill="#2f3133"/>`);
+      }
+      o.push('</g>');
+    }
+
+    // Patio or new deck, closest to the camera, plus the kitchen and pergola that sit on it
+    o.push(`<g transform="${MIRROR}">`);
+    if (has('deck')) {
+      o.push(`<polygon points="0,192 192,192 218,300 0,300" fill="${P.wood}"/>`);
+      for (let y = 200; y < 300; y += 9) {
+        o.push(`<line x1="0" y1="${y}" x2="${f(192 + ((y - 192) * 26) / 108)}" y2="${y}" stroke="${P.woodDark}" stroke-width="1" opacity=".55"/>`);
+      }
+      o.push(`<polygon points="192,192 204,192 230,300 218,300" fill="${P.woodDark}"/>`);
+      o.push(`<rect x="8" y="178" width="96" height="8" rx="2" fill="${P.wood}"/><rect x="8" y="186" width="96" height="7" fill="${P.woodDark}"/>`);
+    } else {
+      o.push('<polygon points="0,214 152,214 178,300 0,300" fill="#a49d92"/>');
+      o.push('<path d="M0 242H161M0 271H170M42 214l4 86M86 214l6 86M128 214l8 86" stroke="#8d877c" stroke-width="1.2" fill="none"/>');
+      o.push('<ellipse cx="50" cy="232" rx="18" ry="6" fill="#857e73" opacity=".6"/><ellipse cx="118" cy="262" rx="22" ry="7" fill="#857e73" opacity=".55"/><ellipse cx="30" cy="285" rx="16" ry="5" fill="#7d776c" opacity=".5"/>');
+      o.push('<path d="M70 222l8 10-4 8 9 12M140 250l-6 12 5 9" stroke="#78726a" stroke-width="1.2" fill="none"/>');
+      o.push('<path d="M44 242l1.5-6 1.5 6M90 271l1.5-7 1.5 7M131 242l1.5-6 1.5 6" stroke="#6b7f35" stroke-width="1.4" fill="none"/>');
+    }
+
+    // Outdoor kitchen counter on the back edge of the deck or patio
+    if (has('kitchen')) {
+      const b = has('deck') ? 194 : 216;
+      o.push(`<rect x="112" y="${b - 26}" width="64" height="26" fill="${P.stone}"/><rect x="108" y="${b - 31}" width="72" height="5" rx="1" fill="#e3ded5"/>`);
+      o.push(`<rect x="146" y="${b - 41}" width="27" height="11" rx="5" fill="#2e3336"/><rect x="118" y="${b - 21}" width="20" height="15" fill="none" stroke="#00000030"/><rect x="146" y="${b - 21}" width="20" height="15" fill="none" stroke="#00000030"/>`);
+    }
+
+    // Pergola
+    if (has('pergola')) {
+      o.push(`<rect x="14" y="108" width="6" height="88" fill="${P.woodDark}"/><rect x="150" y="108" width="6" height="88" fill="${P.woodDark}"/>`);
+      o.push(`<rect x="0" y="104" width="206" height="8" fill="${P.wood}"/>`);
+      for (let x = 6; x < 206; x += 20) o.push(`<rect x="${x}" y="97" width="5" height="21" fill="${P.woodDark}"/>`);
+      const rv = rng(61);
+      for (let i = 0; i < 26; i++) {
+        o.push(`<ellipse cx="${f(rv() * 206)}" cy="${f(100 + rv() * 12)}" rx="${f(6 + rv() * 6)}" ry="${f(3 + rv() * 3)}" fill="${rv() < 0.5 ? '#3f8a3a' : '#57a04a'}"/>`);
+      }
+      for (const x of [40, 96, 132]) o.push(`<path d="M${x} 110q-3 12 1 24" stroke="#3f8a3a" stroke-width="2.4" fill="none" stroke-linecap="round"/>`);
+      o.push(`<rect x="26" y="116" width="9" height="184" fill="${P.wood}"/><rect x="178" y="116" width="9" height="184" fill="${P.wood}"/>`);
+    }
+    o.push('</g>');
+
+    // Glow Up products on the patio (right half), back to front. The umbrella pole stands
+    // between the loveseat and the coffee table, so the seating is drawn in two parts.
+    if (has('rug')) {
+      o.push(`<g data-item="rug"><polygon points="270,232 378,232 390,280 258,280" fill="${P.rug}"/>`);
+      o.push(`<g fill="none" stroke="${P.cushion}" stroke-width="1.8" opacity=".85"><polygon points="276,237 372,237 382,275 266,275"/><path d="M324 243 344 256 324 269 304 256Z"/><path d="M285 256h12M351 256h12"/></g></g>`);
+    }
+    if (has('seating')) {
+      o.push(`<g data-item="seating"><rect x="286" y="200" width="72" height="24" rx="4" fill="${P.woodDark}"/>`);
+      o.push(`<rect x="290" y="203" width="31" height="18" rx="4" fill="${P.cushion}"/><rect x="323" y="203" width="31" height="18" rx="4" fill="${P.cushion}"/>`);
+      o.push(`<rect x="284" y="229" width="76" height="9" rx="2" fill="${P.woodDark}"/><rect x="286" y="220" width="72" height="11" rx="3" fill="${P.cushion}"/><path d="M322 221v9" stroke="#00000022"/>`);
+      o.push(`<rect x="280" y="212" width="9" height="26" rx="3" fill="${P.wood}"/><rect x="355" y="212" width="9" height="26" rx="3" fill="${P.wood}"/>`);
+      o.push(`<rect x="285" y="238" width="3" height="5" fill="${P.woodDark}"/><rect x="356" y="238" width="3" height="5" fill="${P.woodDark}"/></g>`);
+    }
+    if (has('umbrella')) {
+      o.push('<g data-item="umbrella"><rect x="320.8" y="128" width="2.4" height="134" fill="#4f5356"/>');
+      if (!has('seating')) o.push('<ellipse cx="322" cy="263" rx="9" ry="3" fill="#3a3d40"/>');
+      o.push(`<path d="M262 158 322 126 382 158q-10 6-20 0-10 6-20 0-10 6-20 0-10 6-20 0-10 6-20 0-10 6-20 0Z" fill="${P.cushion}" stroke="${P.woodDark}" stroke-width="1" stroke-linejoin="round"/>`);
+      o.push(`<path d="M322 126 282 158M322 126 302 158M322 126v32M322 126 342 158M322 126 362 158" stroke="${P.woodDark}" stroke-width=".8" opacity=".5"/><circle cx="322" cy="125" r="2.2" fill="#4f5356"/></g>`);
+    }
+    if (has('seating')) {
+      o.push(`<g data-item="seating"><rect x="298" y="250" width="48" height="6" rx="2" fill="${P.wood}"/><rect x="300" y="256" width="44" height="5" fill="${P.woodDark}"/>`);
+      o.push(`<rect x="302" y="261" width="3" height="7" fill="${P.woodDark}"/><rect x="339" y="261" width="3" height="7" fill="${P.woodDark}"/>`);
+      for (const x of [252, 366]) {
+        o.push(`<rect x="${x}" y="236" width="30" height="18" rx="3" fill="${P.woodDark}"/><rect x="${x + 3}" y="239" width="24" height="13" rx="3" fill="${P.cushion}"/>`);
+        o.push(`<rect x="${x}" y="257" width="30" height="7" rx="2" fill="${P.woodDark}"/><rect x="${x + 2}" y="251" width="26" height="8" rx="3" fill="${P.cushion}"/>`);
+        o.push(`<rect x="${x - 3}" y="245" width="7" height="19" rx="3" fill="${P.wood}"/><rect x="${x + 26}" y="245" width="7" height="19" rx="3" fill="${P.wood}"/>`);
+        o.push(`<rect x="${x + 1}" y="264" width="3" height="5" fill="${P.woodDark}"/><rect x="${x + 26}" y="264" width="3" height="5" fill="${P.woodDark}"/>`);
+      }
+      o.push('</g>');
+    }
+    if (has('planters')) {
+      o.push('<g data-item="planters">');
+      for (const [x, y, s] of [[247, 222, 1], [387, 222, 1], [237, 294, 1.3]]) {
+        o.push(`<ellipse cx="${x}" cy="${f(y - 28 * s)}" rx="${f(11 * s)}" ry="${f(9 * s)}" fill="#3f8a3a"/><ellipse cx="${f(x - 4 * s)}" cy="${f(y - 32 * s)}" rx="${f(6 * s)}" ry="${f(5 * s)}" fill="#57a04a"/>`);
+        for (const [dx, dy, c] of [[-6, -31, P.flower1], [1, -36, P.flower2], [6, -29, P.flower1], [-1, -26, P.flower2], [8, -35, P.flower2]]) {
+          o.push(`<circle cx="${f(x + dx * s)}" cy="${f(y + dy * s)}" r="${f(2.4 * s)}" fill="${c}"/>`);
+        }
+        o.push(`<polygon points="${f(x - 8 * s)},${f(y - 22 * s)} ${f(x + 8 * s)},${f(y - 22 * s)} ${f(x + 5.5 * s)},${y} ${f(x - 5.5 * s)},${y}" fill="${P.pot}"/>`);
+        o.push(`<rect x="${f(x - 9 * s)}" y="${f(y - 24 * s)}" width="${f(18 * s)}" height="${f(4 * s)}" rx="1" fill="${P.pot}"/><rect x="${f(x - 9 * s)}" y="${f(y - 20 * s)}" width="${f(18 * s)}" height="1.2" fill="#00000026"/>`);
+      }
+      o.push('</g>');
+    }
+
+    // String lights
+    if (has('lights')) {
+      o.push('<g data-item="lights"><path d="M0 34 Q 200 120 400 44" stroke="#3a3a3a" stroke-width="1.2" fill="none"/>');
+      for (let i = 1; i < 16; i++) {
+        const t = i / 16;
+        const x = 2 * (1 - t) * t * 200 + t * t * 400;
+        const y = (1 - t) * (1 - t) * 34 + 2 * (1 - t) * t * 120 + t * t * 44;
+        o.push(`<circle cx="${f(x)}" cy="${f(y + 4)}" r="7" fill="#ffe08a" opacity=".35"/><circle cx="${f(x)}" cy="${f(y + 4)}" r="3" fill="#ffe7a1"/>`);
+      }
+      o.push('</g>');
+    }
+
+    o.push('</svg>');
+    return o.join('');
+  }
+
+  // ---------- State ----------
+  const today = new Date();
+  const daysAgo = (n) => new Date(today.getFullYear(), today.getMonth(), today.getDate() - n);
+  // What the customer has typed into Get This Built. A fresh one each time the sheet opens, like the app.
+  const blankLead = () => ({ name: '', phone: '', email: '', zip: '', notes: '', edited: false, sending: false, sent: false });
+  const state = {
+    aiOn: true,
+    serverURL: DEFAULT_SERVER,
+    photo: { kind: 'sample' },
+    mode: 'glowup',
+    upgrades: new Set(MODES[0].defaultUpgrades),
+    style: '',
+    generating: false,
+    tab: 'design',
+    pushed: { design: null, gallery: null },
+    sheet: '', // '', 'settings', or 'lead'
+    lead: blankLead(),
+    toast: '',
+    gallery: [
+      { id: 'ex1', mode: 'glowup', upgrades: ['lights', 'planters', 'seating'], style: '', photo: { kind: 'sample' }, preview: false, example: true, date: daysAgo(2) },
+      { id: 'ex2', mode: 'glowupplus', upgrades: ['deck', 'firepit', 'landscaping', 'pergola'], style: 'modern', photo: { kind: 'sample' }, preview: false, example: true, date: daysAgo(4) },
+    ],
+  };
+  let nextId = 1;
+  let toastTimer = 0;
+  let leadTimer = 0;
+  // Per-screen memory so re-renders keep the scroll position and the slider where the user left them.
+  const scrollMemory = {};
+  const splitMemory = {};
+
+  const view = document.getElementById('view');
+  const overlay = document.getElementById('overlay');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const modeById = (id) => MODES.find((m) => m.id === id);
+  const modeLabel = (id) => (id === 'glowupplus' ? 'Glow Up Plus' : 'Glow Up');
+  const canGenerate = () => state.photo && state.upgrades.size > 0 && !state.generating;
+  const dateText = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+  function photoMarkup(photo) {
+    return photo.kind === 'sample' ? yardSVG() : `<img src="${photo.url}" alt="Your backyard photo">`;
+  }
+  function afterMarkup(d) {
+    if (d.photo.kind !== 'sample' || d.preview) return photoMarkup(d.photo);
+    return yardSVG({ after: true, mode: d.mode, upgrades: d.upgrades, style: d.style });
+  }
+
+  // ---------- Screens ----------
+  function designScreen() {
+    const mode = modeById(state.mode);
+    // Glow Up sells products ("items"); Glow Up Plus is a contractor build ("upgrades").
+    const isShop = mode.kind === 'shop';
+    const isSample = state.photo.kind === 'sample';
+    let hint = '';
+    if (!state.photo) hint = 'Add a photo to get started.';
+    else if (state.upgrades.size === 0) hint = isShop ? 'Pick at least one item.' : 'Pick at least one upgrade.';
+    else if (state.generating) hint = 'This can take up to a minute.';
+
+    return `
+      <div class="nav-large">
+        <div class="nav-row"><button class="icon-btn" data-action="settings" aria-label="Settings">${I.gear}</button></div>
+        <h2 class="large-title">Backyard Glow Up</h2>
+      </div>
+      <div class="content">
+        ${state.aiOn ? '' : `<div class="banner">${I.info}<span>Preview mode: the server has no AI key yet, so results show your original photo.</span></div>`}
+
+        <section class="section" aria-labelledby="s1">
+          <h3 class="section-title" id="s1"><span class="num">1</span>Your yard</h3>
+          <div class="photo-box">
+            ${photoMarkup(state.photo)}
+            ${isSample ? '<span class="chip-on-image">Sample yard (drawing)</span>' : ''}
+          </div>
+          <div class="btn-row">
+            <label class="btn-bordered">${I.camera}<span>Take Photo</span><input class="visually-hidden" type="file" id="photo-camera" accept="image/*" capture="environment"></label>
+            <label class="btn-bordered">${I.photos}<span>Choose Photo</span><input class="visually-hidden" type="file" id="photo-library" accept="image/*"></label>
+          </div>
+          ${isSample ? '' : '<button class="link-btn" data-action="sample">Use the sample yard instead</button>'}
+        </section>
+
+        <section class="section" aria-labelledby="s2">
+          <h3 class="section-title" id="s2"><span class="num">2</span>Pick a plan</h3>
+          <div class="plans">
+            ${MODES.map((m) => `
+              <button class="plan" data-action="mode" data-value="${m.id}" aria-pressed="${m.id === state.mode}">
+                ${m.kind === 'shop' ? I.bag : I.hammer}
+                <span class="plan-label">${m.label}</span>
+                <span class="plan-blurb">${m.blurb}</span>
+              </button>`).join('')}
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="s3">
+          <h3 class="section-title" id="s3"><span class="num">3</span>${isShop ? 'Items' : 'Upgrades'}</h3>
+          <div class="list">
+            ${mode.upgrades.map((up) => {
+              const on = state.upgrades.has(up.id);
+              return `<button class="list-row" data-action="toggle" data-value="${up.id}" role="checkbox" aria-checked="${on}"><span>${up.label}</span>${on ? I.checkOn : I.checkOff}</button>`;
+            }).join('')}
+          </div>
+        </section>
+
+        <section class="section" aria-labelledby="s4">
+          <h3 class="section-title" id="s4"><span class="num">4</span>Style</h3>
+          <div class="chips">
+            <button class="chip" data-action="style" data-value="" aria-pressed="${state.style === ''}">Keep it natural</button>
+            ${STYLES.map((s) => `<button class="chip" data-action="style" data-value="${s.id}" aria-pressed="${state.style === s.id}">${s.label}</button>`).join('')}
+          </div>
+        </section>
+
+        <div class="gen">
+          <button class="btn-prominent" data-action="generate" ${canGenerate() ? '' : 'disabled'}>
+            ${state.generating
+              ? '<span class="spinner" aria-hidden="true"></span><span>Designing your yard…</span>'
+              : `${I.wand}<span>Show Me the ${mode.label}</span>`}
+          </button>
+          ${hint ? `<p class="hint" role="status">${hint}</p>` : ''}
+        </div>
+      </div>`;
+  }
+
+  function resultScreen(d, backLabel) {
+    const mode = modeById(d.mode);
+    const chosen = mode.upgrades.filter((up) => d.upgrades.includes(up.id));
+    const style = STYLES.find((s) => s.id === d.style);
+    const styleRow = style ? `<div class="inc-row muted">${I.palette}<span>${style.label} style</span></div>` : '';
+    const ratio = d.photo.kind === 'sample' ? '4 / 3' : `${d.photo.w} / ${d.photo.h}`;
+    const split = splitMemory[screenKey()] ?? 50;
+    let note = '';
+    if (d.preview) note = 'Preview mode: no image model is configured, so the original photo is returned.';
+    else if (d.photo.kind !== 'sample') note = 'This web preview can’t run the AI, so it shows your original photo. In the real app, the redesigned yard appears here.';
+
+    return `
+      <div class="nav-inline">
+        <button class="back-btn" data-action="back">${I.chevronLeft}<span>${backLabel}</span></button>
+        <h2>${modeLabel(d.mode)}</h2>
+        <span></span>
+      </div>
+      <div class="content" style="gap:20px">
+        <div>
+          <div class="compare" id="compare" style="aspect-ratio:${ratio}">
+            <div class="layer">${afterMarkup(d)}</div>
+            <div class="layer" id="before-layer" style="clip-path:inset(0 ${100 - split}% 0 0)">${photoMarkup(d.photo)}</div>
+            <div class="handle" id="handle" style="left:${split}%"><span class="knob">${I.arrows}</span></div>
+            <span class="tag l">Before</span><span class="tag r">After</span>
+            <input class="visually-hidden" type="range" id="compare-split" min="0" max="100" step="1" value="${split}" aria-label="Compare before and after">
+          </div>
+          <p class="hint" style="margin-top:10px">Drag the slider to compare.</p>
+        </div>
+        ${note ? `<div class="note">${I.infoLine}<span>${note}</span></div>` : ''}
+        ${mode.kind === 'shop' ? `
+        <div class="included">
+          <h3>Shop this look</h3>
+          ${chosen.map((up) => `<div class="shop-row"><span>${up.label}</span>${up.url || DEMO_STORE_URL
+            ? `<button class="btn-bordered btn-small" data-action="amazon" data-value="${up.id}">View on Amazon</button>`
+            : '<span class="soon">Link coming soon</span>'}</div>`).join('')}
+          ${styleRow}
+        </div>` : `
+        <div class="included">
+          <h3>What's included</h3>
+          ${chosen.map((up) => `<div class="inc-row">${I.checkFill}<span>${up.label}</span></div>`).join('')}
+          ${styleRow}
+        </div>
+        <div class="build">
+          <button class="btn-prominent" data-action="lead">${I.hammer}<span>Get This Built</span></button>
+          <p class="hint">A local contractor will contact you with a quote.</p>
+        </div>`}
+        <button class="btn-bordered btn-wide" data-action="share">${I.share}<span>Share</span></button>
+      </div>`;
+  }
+
+  function galleryScreen() {
+    const tiles = state.gallery.map((d) => `
+      <button class="tile" data-action="open" data-value="${d.id}">
+        <div class="thumb">${afterMarkup(d)}${d.example ? '<span class="chip-on-image">Example</span>' : ''}</div>
+        <span class="tile-label">${modeLabel(d.mode)}</span>
+        <span class="tile-date">${dateText(d.date)}</span>
+      </button>`).join('');
+    return `
+      <div class="nav-large"><div class="nav-row"></div><h2 class="large-title">Gallery</h2></div>
+      ${state.gallery.length ? `<div class="grid">${tiles}</div>` : '<div class="empty"><strong>No designs yet</strong><br>Designs you make will show up here.</div>'}`;
+  }
+
+  function settingsStatus() {
+    return state.aiOn
+      ? `<div class="form-row status-ok">${I.okCircle}<span>Connected, AI image generation on</span></div>`
+      : `<div class="form-row status-warn">${I.infoLine}<span>Connected, preview mode (no AI key on server)</span></div>`;
+  }
+
+  function settingsSheet() {
+    return `
+      <div class="backdrop" data-action="sheet-dismiss"></div>
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+        <div class="sheet-nav">
+          <button class="text-btn l" data-action="sheet-cancel">Cancel</button>
+          <h2 id="sheet-title">Settings</h2>
+          <button class="text-btn r" data-action="sheet-save">Save</button>
+        </div>
+        <div class="form">
+          <h3 class="form-h"><label for="server-url">Server address</label></h3>
+          <div class="form-row"><input id="server-url" type="url" inputmode="url" autocapitalize="off" autocomplete="off" spellcheck="false" placeholder="${DEFAULT_SERVER}" value="${esc(state.serverURL)}"></div>
+          <p class="form-f">Simulator: http://localhost:8080. On a real iPhone, use your Mac's network address, like http://192.168.1.20:8080, or your hosted server's address.</p>
+          <h3 class="form-h">Status</h3>
+          <div id="sheet-status">${settingsStatus()}</div>
+        </div>
+      </div>`;
+  }
+
+  // The same checks, in the same order and with the same messages, as the server's POST /api/leads.
+  const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  function leadProblem(lead) {
+    const [name, phone, email, zip, notes] = ['name', 'phone', 'email', 'zip', 'notes'].map((k) => lead[k].trim());
+    if (!name) return 'Add your name';
+    if (name.length > 100) return 'Keep your name under 100 characters';
+    if (!phone && !email) return 'Add a phone number or email so the contractor can reach you';
+    if (phone && (phone.replace(/\D/g, '').length < 7 || phone.length > 30)) return 'Check the phone number';
+    if (email && (!EMAIL_PATTERN.test(email) || email.length > 200)) return 'Check the email address';
+    if (zip.length < 3 || zip.length > 12) return 'Add your ZIP code';
+    if (notes.length > 1000) return 'Keep notes under 1,000 characters';
+    return null;
+  }
+
+  function leadNav() {
+    const { sending, sent } = state.lead;
+    if (sent) return '<span></span><h2 id="sheet-title">Get This Built</h2><span></span>';
+    return `
+      <button class="text-btn l" data-action="sheet-cancel" ${sending ? 'disabled' : ''}>Cancel</button>
+      <h2 id="sheet-title">Get This Built</h2>
+      ${sending
+        ? '<span class="spinner" role="status" aria-label="Sending"></span>'
+        : `<button class="text-btn r" id="lead-send" data-action="lead-send" ${leadProblem(state.lead) ? 'disabled' : ''}>Send</button>`}`;
+  }
+
+  const leadField = (field, label, attrs) =>
+    `<div class="form-row"><input id="lead-${field}" data-field="${field}" ${attrs} placeholder="${label}" aria-label="${label}"></div>`;
+
+  function leadSheet() {
+    return `
+      <div class="backdrop" data-action="sheet-dismiss"></div>
+      <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+        <div class="sheet-nav" id="lead-nav">${leadNav()}</div>
+        <div class="form" id="lead-body">
+          <fieldset id="lead-fields">
+            <h3 class="form-h">Your details</h3>
+            <div class="form-group">
+              ${leadField('name', 'Name', 'type="text" autocomplete="name" autocapitalize="words"')}
+              ${leadField('phone', 'Phone', 'type="tel" inputmode="tel" autocomplete="tel"')}
+              ${leadField('email', 'Email', 'type="email" inputmode="email" autocomplete="email" autocapitalize="off" autocorrect="off" spellcheck="false"')}
+              ${leadField('zip', 'ZIP code', 'type="text" autocomplete="postal-code"')}
+            </div>
+            <p class="form-f">Add a phone number or email so the contractor can reach you.</p>
+            <h3 class="form-h">About the project</h3>
+            <div class="form-row"><textarea id="lead-notes" data-field="notes" rows="3" placeholder="Anything the contractor should know? (optional)" aria-label="Notes"></textarea></div>
+          </fieldset>
+          <p class="form-error" id="lead-error" role="status"></p>
+        </div>
+      </div>`;
+  }
+
+  function leadSent() {
+    return `
+      <div class="sent" id="lead-body">
+        ${I.checkFill}
+        <h3>Request sent</h3>
+        <p>${esc(CONTRACTOR.name || 'A local contractor')} will contact you soon to plan your project and give you a quote.</p>
+        ${CONTRACTOR.phone ? `<p>Questions? Call ${esc(CONTRACTOR.phone)}.</p>` : ''}
+        <button class="btn-prominent" id="lead-done" data-action="lead-done">Done</button>
+      </div>`;
+  }
+
+  // ---------- Render ----------
+  function screenKey() {
+    const d = state.pushed[state.tab];
+    return state.tab + (d ? ':' + d.id : '');
+  }
+  let currentKey = '';
+
+  function render() {
+    // Remember which control had focus so keyboard users aren't sent back to the top (I3).
+    const active = document.activeElement;
+    const focusTarget = active && view.contains(active)
+      ? { id: active.id, action: active.dataset.action, value: active.dataset.value ?? '' }
+      : null;
+
+    if (currentKey) scrollMemory[currentKey] = view.scrollTop;
+    const d = state.pushed[state.tab];
+    currentKey = screenKey();
+    if (state.tab === 'design') view.innerHTML = d ? resultScreen(d, 'Back') : designScreen();
+    else view.innerHTML = d ? resultScreen(d, 'Gallery') : galleryScreen();
+    view.scrollTop = scrollMemory[currentKey] || 0;
+
+    for (const t of ['design', 'gallery']) {
+      document.getElementById('tab-' + t).setAttribute('aria-selected', String(state.tab === t));
+    }
+    document.querySelectorAll('[data-ai]').forEach((b) => b.setAttribute('aria-pressed', String((b.dataset.ai === 'on') === state.aiOn)));
+    bindCompare();
+
+    if (focusTarget) {
+      const next = focusTarget.id
+        ? document.getElementById(focusTarget.id)
+        : focusTarget.action
+          ? view.querySelector(`[data-action="${CSS.escape(focusTarget.action)}"][data-value="${CSS.escape(focusTarget.value)}"]`)
+          : null;
+      if (next && !next.disabled) next.focus({ preventScroll: true });
+    }
+    renderOverlay();
+  }
+
+  // A sheet is built once when it opens, so typing in it survives other updates (I5).
+  // Closing it hands focus back to the button that opened it.
+  function renderOverlay() {
+    const host = document.getElementById('sheet-host');
+    const openKind = host.querySelector('.sheet') ? host.dataset.sheet : '';
+    if (state.sheet !== openKind) {
+      host.innerHTML = state.sheet === 'settings' ? settingsSheet() : state.sheet === 'lead' ? leadSheet() : '';
+      host.dataset.sheet = state.sheet;
+      if (state.sheet) document.getElementById(state.sheet === 'settings' ? 'server-url' : 'lead-name').focus({ preventScroll: true });
+      else view.querySelector(`[data-action="${openKind}"]`)?.focus({ preventScroll: true });
+    } else if (openKind === 'settings') {
+      document.getElementById('sheet-status').innerHTML = settingsStatus();
+    }
+    renderToast();
+  }
+
+  // Refreshes Send and the error line in place; the fields themselves are never rebuilt.
+  // The first problem only shows once the customer has finished editing a field.
+  function updateLeadForm() {
+    const problem = leadProblem(state.lead);
+    const send = document.getElementById('lead-send');
+    if (send) send.disabled = Boolean(problem);
+    document.getElementById('lead-error').textContent = state.lead.edited ? problem || '' : '';
+  }
+
+  // Nothing leaves the preview: a short wait stands in for the request to the server.
+  function sendLead() {
+    if (state.lead.sending || leadProblem(state.lead)) return;
+    state.lead.sending = true;
+    document.getElementById('lead-fields').disabled = true;
+    document.getElementById('lead-nav').innerHTML = leadNav();
+    leadTimer = setTimeout(() => {
+      state.lead.sending = false;
+      state.lead.sent = true;
+      document.getElementById('lead-nav').innerHTML = leadNav();
+      document.getElementById('lead-body').outerHTML = leadSent();
+      document.getElementById('lead-done').focus({ preventScroll: true });
+    }, 1000);
+  }
+
+  function closeSheet() {
+    clearTimeout(leadTimer);
+    state.lead.sending = false;
+    state.sheet = '';
+  }
+
+  function renderToast() {
+    document.getElementById('toast-host').innerHTML = state.toast ? `<div class="toast" role="status">${esc(state.toast)}</div>` : '';
+  }
+
+  function bindCompare() {
+    const box = document.getElementById('compare');
+    if (!box) return;
+    const before = document.getElementById('before-layer');
+    const handle = document.getElementById('handle');
+    const range = document.getElementById('compare-split');
+    const set = (pct) => {
+      const p = Math.min(100, Math.max(0, pct));
+      before.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
+      handle.style.left = p + '%';
+      range.value = String(Math.round(p));
+      splitMemory[currentKey] = p;
+    };
+    const fromPointer = (e) => {
+      const r = box.getBoundingClientRect();
+      set(((e.clientX - r.left) / r.width) * 100);
+    };
+    box.addEventListener('pointerdown', (e) => {
+      box.setPointerCapture(e.pointerId);
+      fromPointer(e);
+      range.focus({ preventScroll: true });
+    });
+    box.addEventListener('pointermove', (e) => {
+      if (box.hasPointerCapture(e.pointerId)) fromPointer(e);
+    });
+    range.addEventListener('input', () => set(Number(range.value)));
+  }
+
+  function showToast(text) {
+    state.toast = text;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => {
+      state.toast = '';
+      renderToast();
+    }, 2800);
+    renderToast();
+  }
+
+  function clearToast() {
+    state.toast = '';
+    clearTimeout(toastTimer);
+  }
+
+  // Leaving a result screen forgets its scroll and slider, like a fresh SwiftUI view (I6).
+  function popScreen(tab) {
+    const key = tab + ':' + state.pushed[tab].id;
+    state.pushed[tab] = null;
+    delete scrollMemory[key];
+    delete splitMemory[key];
+  }
+
+  // ---------- Actions ----------
+  function selectMode(id) {
+    state.mode = id;
+    state.upgrades = new Set(modeById(id).defaultUpgrades);
+  }
+
+  function generate() {
+    if (!canGenerate()) return;
+    state.generating = true;
+    render();
+    const snapshot = {
+      id: 'd' + nextId++,
+      mode: state.mode,
+      upgrades: [...state.upgrades].sort(),
+      style: state.style,
+      photo: state.photo,
+      preview: !state.aiOn,
+      example: false,
+      date: new Date(),
+    };
+    setTimeout(() => {
+      state.generating = false;
+      state.gallery.unshift(snapshot);
+      state.pushed.design = snapshot;
+      delete scrollMemory['design:' + snapshot.id];
+      render();
+    }, 2200);
+  }
+
+  function handleAction(action, value) {
+    switch (action) {
+      case 'tab':
+        clearToast();
+        if (state.tab === value && state.pushed[value]) {
+          currentKey = '';
+          popScreen(value);
+        }
+        state.tab = value;
+        break;
+      case 'settings': state.sheet = 'settings'; break;
+      case 'sheet-dismiss':
+        // A tap outside the sheet, like a swipe down: ignored while a request is on its way.
+        if (state.lead.sending) return;
+        closeSheet();
+        break;
+      case 'sheet-cancel': closeSheet(); break;
+      case 'sheet-save': {
+        const v = document.getElementById('server-url').value.trim();
+        state.serverURL = v || DEFAULT_SERVER;
+        state.sheet = '';
+        break;
+      }
+      case 'lead':
+        state.lead = blankLead();
+        state.sheet = 'lead';
+        break;
+      case 'lead-send': sendLead(); return;
+      case 'lead-done': closeSheet(); break;
+      case 'mode': selectMode(value); break;
+      case 'toggle':
+        if (state.upgrades.has(value)) state.upgrades.delete(value);
+        else state.upgrades.add(value);
+        break;
+      case 'style': state.style = value; break;
+      case 'sample': state.photo = { kind: 'sample' }; break;
+      case 'generate': generate(); return;
+      case 'back':
+        clearToast();
+        // Save nothing for the screen being left: render() would otherwise store its scroll again.
+        currentKey = '';
+        popScreen(state.tab);
+        break;
+      case 'open':
+        delete scrollMemory['gallery:' + value];
+        delete splitMemory['gallery:' + value];
+        state.pushed.gallery = state.gallery.find((d) => d.id === value) || null;
+        break;
+      case 'share': showToast('In the app, this opens the iPhone share sheet so you can text or email the design to family and friends.'); return;
+      case 'amazon': showToast('In the app, this opens the product in your Amazon store.'); return;
+      default: return;
+    }
+    render();
+  }
+
+  document.getElementById('screen').addEventListener('click', (e) => {
+    const el = e.target.closest('[data-action]');
+    if (!el) return;
+    handleAction(el.dataset.action, el.dataset.value ?? '');
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && state.sheet && !state.lead.sending) {
+      closeSheet();
+      renderOverlay();
+    }
+  });
+
+  // Get This Built fields: keep the draft in state, then refresh Send and the error line.
+  overlay.addEventListener('input', (e) => {
+    const field = e.target.dataset.field;
+    if (!field) return;
+    state.lead[field] = e.target.value;
+    updateLeadForm();
+  });
+  overlay.addEventListener('change', (e) => {
+    if (!e.target.dataset.field) return;
+    state.lead.edited = true;
+    updateLeadForm();
+  });
+
+  view.addEventListener('change', (e) => {
+    const input = e.target;
+    if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
+    const file = input.files && input.files[0];
+    if (!file || !file.type.startsWith('image/')) return;
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      state.photo = { kind: 'upload', url, w: img.naturalWidth || 4, h: img.naturalHeight || 3 };
+      render();
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      showToast('That file couldn’t be opened as a photo. Try a JPG or PNG.');
+    };
+    img.src = url;
+  });
+
+  document.querySelectorAll('[data-ai]').forEach((b) => {
+    b.addEventListener('click', () => {
+      state.aiOn = b.dataset.ai === 'on';
+      render();
+    });
+  });
+
+  overlay.innerHTML = '<div id="sheet-host"></div><div id="toast-host"></div>';
+  render();
+})();
+</script>

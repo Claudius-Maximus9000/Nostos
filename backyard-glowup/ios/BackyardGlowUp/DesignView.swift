@@ -140,7 +140,10 @@ struct DesignView: View {
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    Divider().padding(.leading, 14)
+                    // Lines go between rows only, as in the approved design.
+                    if upgrade.id != model.selectedMode?.upgrades.last?.id {
+                        Divider().padding(.leading, 14)
+                    }
                 }
             }
             .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
@@ -172,7 +175,7 @@ struct DesignView: View {
             } label: {
                 HStack {
                     if model.isGenerating {
-                        ProgressView().tint(.white)
+                        ProgressView()
                         Text("Designing your yard…")
                     } else {
                         Image(systemName: "wand.and.stars")

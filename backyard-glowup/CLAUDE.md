@@ -1,5 +1,9 @@
 # Backyard Glow Up
 
+**Read `docs/START-HERE.md` first.** It is the full handoff: the owner, the design (colors,
+type, every screen), the rules, and the task list in order. Where it differs from this file,
+it wins.
+
 An iPhone app for a backyard contracting company. A homeowner photographs their backyard,
 picks a plan, and sees an AI redesign of their own yard with a before/after slider.
 
@@ -64,7 +68,9 @@ on anything they need to do themselves (Apple account, App Store Connect, keys, 
   `LeadFormView.swift` mirrors `leadProblem()` in `server.js`, rule for rule and message
   for message. Change both together.
 - **Copy:** button and screen text is deliberate (for example "Show Me the Glow Up",
-  "Shop this look", "View on Amazon", "Link coming soon", "Get This Built",
-  "Request sent"). Keep wording consistent between the app and the server's messages.
+  "Shop this look", "View on Amazon", "Get This Built", "Request sent"). Keep wording
+  consistent between the app and the server's messages. "Link coming soon" is a fallback
+  that must not ship: Apple rejects placeholder content, so every Glow Up item needs a link
+  before submission.
 - Plans, items, and styles come from the server (`/api/config`), so the catalog can change
   without an app update. Don't hardcode catalog data in Swift.
