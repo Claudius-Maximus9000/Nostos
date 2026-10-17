@@ -1,0 +1,58 @@
+# Render Blueprint for the Backyard Glow Up server.
+#
+# Render reads this file and sets up the hosting for you: one small web server on the
+# Starter plan, with a 5 GB disk that keeps customer designs and Glow Up Plus requests
+# through restarts and deploys. Render gives the server an https:// address, which is
+# what the iPhone app needs.
+#
+# To use it: in Render choose New > Blueprint, pick this GitHub repository and branch,
+# and set the Blueprint path to backyard-glowup/render.yaml (the app lives in the
+# backyard-glowup folder, not at the top of the repository).
+#
+# Settings marked `sync: false` are keys and business details. Render asks for them when
+# the Blueprint is first created, and they never go in this file or in git. Change them
+# later on the service's Environment page in Render.
+#
+# Everything else (image model, quality, daily limits, how long photos are kept) uses
+# the server's defaults. README.md lists every setting.
+services:
+  - type: web
+    name: backyard-glowup
+    runtime: node
+    plan: starter
+    # The app is in a subfolder of the repository.
+    rootDir: backyard-glowup
+    # The server has no dependencies, so this installs nothing; it is here because Render
+    # expects a build step.
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    disk:
+      name: glowup-data
+      mountPath: /var/data
+      sizeGB: 5
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Designs and requests are saved on the disk above, not inside the app folder
+      # (which is replaced on every deploy).
+      - key: DATA_DIR
+        value: /var/data
+      # Render's proxy sits in front of the server, so each customer's address arrives in
+      # the X-Forwarded-For header. The daily per-customer limit needs it.
+      - key: TRUST_PROXY
+        value: "true"
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ADMIN_TOKEN
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: LEAD_EMAIL_TO
+        sync: false
+      - key: AMAZON_STORE_URL
+        sync: false
+      - key: CONTRACTOR_NAME
+        sync: false
+      - key: CONTRACTOR_PHONE
+        sync: false
